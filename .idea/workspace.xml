@@ -36,13 +36,13 @@
         <counts>
           <entry key="dummy" value="13" />
           <entry key="html" value="1" />
-          <entry key="js" value="2528" />
+          <entry key="js" value="3456" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="1" />
-          <entry key="JavaScript" value="2528" />
+          <entry key="JavaScript" value="3456" />
           <entry key="PLAIN_TEXT" value="13" />
         </counts>
       </usages-collector>
@@ -53,8 +53,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/script.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="341">
-              <caret line="60" column="56" selection-start-line="60" selection-start-column="56" selection-end-line="60" selection-end-column="56" />
+            <state relative-caret-position="487">
+              <caret line="93" column="158" selection-start-line="93" selection-start-column="158" selection-end-line="93" selection-end-column="158" />
             </state>
           </provider>
         </entry>
@@ -62,8 +62,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/examples/example-exceeds.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="129" column="28" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="28" />
+            <state relative-caret-position="230">
+              <caret line="10" column="20" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -168,12 +168,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1537004133685</updated>
-      <workItem from="1537004137932" duration="5017000" />
+      <workItem from="1537004137932" duration="6204000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5017000" />
+    <option name="totallyTimeSpent" value="6204000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1920" height="977" extended-state="6" />
@@ -218,9 +218,6 @@
         <state relative-caret-position="-830" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/design.css">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -228,17 +225,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/css/design.css">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/examples/example-exceeds.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="129" column="28" selection-start-line="129" selection-start-column="22" selection-end-line="129" selection-end-column="28" />
+        <state relative-caret-position="230">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="20" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/script.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="341">
-          <caret line="60" column="56" selection-start-line="60" selection-start-column="56" selection-end-line="60" selection-end-column="56" />
+        <state relative-caret-position="487">
+          <caret line="93" column="158" selection-start-line="93" selection-start-column="158" selection-end-line="93" selection-end-column="158" />
         </state>
       </provider>
     </entry>

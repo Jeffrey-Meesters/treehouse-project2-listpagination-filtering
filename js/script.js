@@ -53,20 +53,31 @@ hideStudentItems();
 
 // Create and append the pagination links - Creating a function that can do this is a good approach
 function createPaginationLinks() {
+    // get the number of students in the list
     const numberOfStudents = allStudents.length;
+    // decide how many pages there should be
+    // if there are 12 students there should be 2 pages
+    // So I looked up the math method that rounds up on mdn, divided the number of students by
+    // the number of students per page which rounded up should give the total pages needed
     const numberOfPaginationItems = Math.ceil(numberOfStudents/showStudentsPerPage);
+
     //I looked in the example html and knew I had to build the following structure
     const paginationWrapper = document.createElement('div');
     paginationWrapper.className = 'pagination';
     const paginationList = document.createElement('ul');
 
-    for(let i = 0; i < numberOfPaginationItems; i += 1) {
+    // create list items with an anchor tag, with href attribute and an '#' as value
+    // set the textContent of the anchor tag with the number of the page
+    // if the number of the page equals the number of the selected page set its class to active
+    // append the build up anchor tag to the li and append the li to the ul
+     for (let i = 0; i < numberOfPaginationItems; i += 1) {
+         let pageNumber = i + 1;
         const paginationListItem = document.createElement('li');
         const paginationLinkItem = document.createElement('a');
 
         paginationLinkItem.setAttribute('href', '#');
-        paginationLinkItem.textContent = (i + 1);
-        if((i + 1) === selectedPaginationNumber) {
+        paginationLinkItem.textContent = pageNumber;
+        if (pageNumber === selectedPaginationNumber) {
             paginationLinkItem.className = 'active';
         }
 
@@ -74,15 +85,12 @@ function createPaginationLinks() {
         paginationList.appendChild(paginationListItem);
     }
 
+    // When the loop is done append the paginationList (ul), to the paginationWrapper (div)
     paginationWrapper.appendChild(paginationList);
 
-    console.log(paginationWrapper);
-
-// <div class="pagination">
-//         <ul>
-//         <li>
-//         <a class="active" href="#">1</a>
-//         </li>
+    // I knew I had to use insertBefore() but not how
+    // So I used this top answer: https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
+    mainStudentsList.parentNode.insertBefore(paginationWrapper, mainStudentsList.nextSibling);
 }
 
 createPaginationLinks();
