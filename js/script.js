@@ -52,11 +52,14 @@ hideStudentItems();
 
 // I remembered this function from the course
 // It is for creating elements
-function createElement(elementName, elementAttribute, value) {
+// with an object I can send more values so I send an object instead of strings
+function createElement(elementName, attributeObject) {
     const element = document.createElement(elementName);
 
-    if (elementAttribute && value ) {
-        element[elementAttribute] = value;
+    if (attributeObject) {
+        Object.keys(attributeObject).forEach(function(item) {
+            element[item] = attributeObject[item];
+        })
     }
 
     return element;
@@ -73,7 +76,7 @@ function createPaginationLinks() {
     const numberOfPaginationItems = Math.ceil(numberOfStudents/showStudentsPerPage);
 
     //I looked in the example html and knew I had to build the following structure
-    const paginationWrapper = createElement('div', 'className', 'pagination');
+    const paginationWrapper = createElement('div', {className: 'pagination'});
 
     const paginationList = createElement('ul');
     paginationList.addEventListener('click', changePage);
@@ -86,7 +89,7 @@ function createPaginationLinks() {
         let pageNumber = i + 1;
         const paginationListItem = createElement('li');
 
-        const paginationLinkItem = createElement('a', 'textContent', pageNumber);
+        const paginationLinkItem = createElement('a', {textContent: pageNumber});
         paginationLinkItem.setAttribute('href', '#');
 
         if (pageNumber === selectedPaginationNumber) {
@@ -126,19 +129,37 @@ function changePage(e) {
 
     // set selectedPagination number to the textContent of the clicked paginationLink
     selectedPaginationNumber = e.target.textContent;
-    // gif the clicked item a class of 'active'
+    // give the clicked item a class of 'active'
     e.target.className = 'active';
     // call hideStudentItems to show the correct students
     hideStudentItems();
 }
 
 // MAKE search functionality
+function removeError() {
+    // check if there is an error element, if so remove it
+    const isError = document.getElementById('search-error');
+    if (isError) {
+        isError.parentNode.removeChild(isError);
+    }
+}
+
+function removeNoResult() {
+    // check if there is an no-result element, if so remove it
+    const isNoresult = document.getElementById('no-search-result');
+    if (isNoresult) {
+        isNoresult.parentNode.removeChild(isNoresult);
+    }
+}
 
 function searchStudent(searchValue) {
     // get all h3 elements as that holds the students name
     const allStudentNameElements = document.querySelectorAll('h3');
     // set found student to false
     let foundStudent = false;
+    // reset error and no result message
+    removeError();
+    removeNoResult();
 
     // loop over all the h3 elements
     for (let i = 0; i < allStudentNameElements.length; i += 1) {
@@ -162,7 +183,7 @@ function searchStudent(searchValue) {
                     ancestor.style.display = 'none';
                 }
             } else {
-                // if the searchvalues length is more than 1 it is a match on more letters
+                // if the searchvalues length is more than 1 it is a match on more letters in the same order
                 // found a match so found the student > true
                 foundStudent = true;
                 // select the ancestor of this h3
@@ -179,11 +200,12 @@ function searchStudent(searchValue) {
 
     // if foundStudent is still false show that there is no student found
     if (!foundStudent) {
-        const noSearchResult = createElement('span', 'textContent', 'No Student found');
-        noSearchResult.id = 'no-search-result';
+        const noSearchResult = createElement('span', {
+            textContent: 'No Student found',
+            id: 'no-search-result'
+        });
 
         mainStudentsList.appendChild(noSearchResult);
-        document.getElementById('search-btn').textContent = 'Search';
     }
 }
 
@@ -191,15 +213,17 @@ function searchStudent(searchValue) {
 function submitSearch(e) {
     // I logged the event and saw that I can reach the input element with: e.target[0], as the input element is first in the target array
     const searchValue = e.target[0].value;
+    e.target[0].value = '';
     if (searchValue === '' || !isNaN(searchValue)) {
-        const errorSpan = createElement('span', 'textContent', 'You did not give a name');
-        errorSpan.id = 'search-error';
+        const errorSpan = createElement('span', {
+            textContent: 'You did not give a name',
+            id: 'search-error'
+        });
         errorSpan.style.color = '#f00';
         errorSpan.style.position = 'absolute';
         errorSpan.style.margin = '-20px -245px';
 
         e.target.appendChild(errorSpan);
-        document.getElementById('search-btn').textContent = 'Search';
     } else {
         // hide pagination
         document.getElementsByClassName('pagination')[0].style.display = 'none';
@@ -210,17 +234,8 @@ function submitSearch(e) {
 
 // When called reset the page to last pagination result
 function resetSearch() {
-    // check if there is an error element, if so remove it
-    const isError = document.getElementById('search-error');
-    if (isError) {
-        isError.parentNode.removeChild(isError);
-    }
-
-    // check if there is an no-result element, if so remove it
-    const isNoresult = document.getElementById('no-search-result');
-    if (isNoresult) {
-        isNoresult.parentNode.removeChild(isNoresult);
-    }
+    removeError();
+    removeNoResult();
 
     // call the hideStudentItems function the determine which item has to be displayed
     hideStudentItems();
@@ -228,7 +243,7 @@ function resetSearch() {
     document.getElementsByClassName('pagination')[0].style.display = 'block';
 }
 
-// I looked in the exceeds example and knew I have to build this:
+// I looked in the exceeds example and I have to build this:
 <!-- student search HTML to add dynamically -->
 // <div class="student-search">
 //     <input placeholder="Search for students...">
@@ -238,39 +253,47 @@ function resetSearch() {
 function createSearch() {
     const pageHeader = document.getElementsByClassName('page-header')[0];
     // Start create elements
-    const searchDiv = createElement('div', 'className', 'student-search');
+    const searchDiv = createElement('div', {className: 'student-search'});
 
-    const form = createElement('form', 'id', 'search-form');
+    // I wanted a form element so user can submit on enter and click
+    const form = createElement('form', {id: 'search-form'});
 
-    const searchInput = createElement('input', 'placeholder', 'Search for students...');
+    const searchInput = createElement('input', {placeholder: 'Search for students...'});
 
-    const searchBtn = createElement('button', 'textContent', 'Search');
-    searchBtn.id = 'search-btn';
-    searchBtn.type = 'submit';
+    const searchBtn = createElement('button', {
+        textContent: 'Search',
+        type: 'submit'
+    });
 
+    // the reset button cannot be of type submit, else it will trigger a form submit
+    // so I set it's type specifically to button and gave it it's own eventlistener below
+    const resetBtn = createElement('button', {
+        textContent: 'Reset',
+        id: 'reset-btn',
+        type: 'button'
+    });
+    resetBtn.style.display = 'none';
     // End create elements
+
     // add eventlistener for form submit
     form.addEventListener('submit', (event) => {
         event.preventDefault();
-        // if the button has textContent reset then call reset function & set it to search
-        if (event.target[1].textContent === 'Reset') {
-            searchBtn.textContent = 'Search';
-            resetSearch();
-        //    else this is a search so call search & set button to reset
-        } else {
-            searchBtn.textContent = 'Reset';
-            const isError = document.getElementById('search-error');
-            if (isError) {
-                isError.parentNode.removeChild(isError);
-            }
-            // I pass the event object as I need it in the next function
-            submitSearch(event);
-        }
+        removeError();
+        // I pass the event object as I need it in the next function
+        submitSearch(event);
+        document.getElementById('reset-btn').style.display = 'inline-block';
+    });
+
+    // add an eventlistener to the reset button
+    resetBtn.addEventListener('click', () => {
+        resetSearch();
+        document.getElementById('reset-btn').style.display = 'none';
     });
 
     // append children to build the dom item
     form.appendChild(searchInput);
     form.appendChild(searchBtn);
+    form.appendChild(resetBtn);
     searchDiv.appendChild(form);
 
     // append the build to the dom
