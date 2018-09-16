@@ -122,6 +122,99 @@ function changePage(e) {
 }
 
 // MAKE search functionality
+
+function searchStudent(searchValue) {
+    // get all h3 elements as that holds the students name
+    const allStudentNameElements = document.querySelectorAll('h3');
+    // set found student to false
+    let foundStudent = false;
+
+    // loop over all the h3 elements
+    for (let i = 0; i < allStudentNameElements.length; i += 1) {
+        // I used the match method as I know it will match any text input with the name and return true or false
+        if (allStudentNameElements[i].textContent.match(searchValue)) {
+            // if the search exists of only 1 letter I made this function show only all the names that begin with that letter
+            if (searchValue.length === 1) {
+                // the index key of match holds a value, that value is the index on which it found the letter
+                let matchIndex = allStudentNameElements[i].textContent.match(searchValue).index;
+                // if index is 0 it is the first letter it matched with
+                if (matchIndex === 0) {
+                    // we found a match so we found the student > true
+                    foundStudent = true;
+                    // select the ancestor of this h3
+                    const ancestor = allStudentNameElements[i].parentNode.parentNode;
+                    // show it
+                    ancestor.style.display = 'block';
+                } else {
+                    // this element should not be shown as it is no match
+                    const ancestor = allStudentNameElements[i].parentNode.parentNode;
+                    ancestor.style.display = 'none';
+                }
+            } else {
+                // if the searchvalues length is more than 1 it is a match on more letters
+                // we found a match so we found the student > true
+                foundStudent = true;
+                // select the ancestor of this h3
+                const ancestor = allStudentNameElements[i].parentNode.parentNode;
+                // show it
+                ancestor.style.display = 'block';
+            }
+        } else {
+            // this element should not be shown as it is no match
+            const ancestor = allStudentNameElements[i].parentNode.parentNode;
+            ancestor.style.display = 'none';
+        }
+    }
+
+    // if foundStudent is still false show that there is no student found
+    if (!foundStudent) {
+        const noSearchResult = document.createElement('span');
+        noSearchResult.id = 'no-search-result';
+        noSearchResult.textContent = 'No student found';
+        mainStudentsList.appendChild(noSearchResult);
+    }
+}
+
+// First check if the submitted value is correct else show an error
+function submitSearch(e) {
+    // I logged the event and saw that I can reach the input element with: e.target[0], as the input element is first in the target array
+    const searchValue = e.target[0].value;
+    if (searchValue === '' || !isNaN(searchValue)) {
+        const errorSpan = document.createElement('span');
+        errorSpan.id = 'search-error';
+        errorSpan.style.color = '#f00';
+        errorSpan.style.position = 'absolute';
+        errorSpan.style.margin = '-20px -245px';
+        errorSpan.textContent = 'You did not give a name';
+        e.target.appendChild(errorSpan);
+    } else {
+        // hide pagination
+        document.getElementsByClassName('pagination')[0].style.display = 'none';
+        // call the search function with the search value
+        searchStudent(searchValue);
+    }
+}
+
+// When called reset the page to last pagination result
+function resetSearch() {
+    // check if there is an error element, if so remove it
+    const isError = document.getElementById('search-error');
+    if (isError) {
+        isError.parentNode.removeChild(isError);
+    }
+
+    // check if there is an no-result element, if so remove it
+    const isNoresult = document.getElementById('no-search-result');
+    if (isNoresult) {
+        isNoresult.parentNode.removeChild(isNoresult);
+    }
+
+    // call the hideStudentItems function the determine which item has to be displayed
+    hideStudentItems();
+    // show pagination again
+    document.getElementsByClassName('pagination')[0].style.display = 'block';
+}
+
 // I looked in the exceeds example and knew I have to build this:
 <!-- student search HTML to add dynamically -->
 // <div class="student-search">
@@ -129,22 +222,44 @@ function changePage(e) {
 //     <button>Search</button>
 // </div>
 <!-- end search -->
-
-function createSearchInput() {
+function createSearch() {
     const pageHeader = document.getElementsByClassName('page-header')[0];
+    // Start create elements
     const searchDiv = document.createElement('div');
     searchDiv.className = 'student-search';
+
+    const form = document.createElement('form');
+    form.id = 'search-from';
 
     const searchInput = document.createElement('input');
     searchInput.placeholder = 'Search for students...';
 
     const searchBtn = document.createElement('button');
+    searchBtn.type = 'submit';
     searchBtn.textContent = 'Search';
+    // End create elements
+    // add eventlistener for form submit
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        // if the button has textContent reset then call reset function & set it to search
+        if (event.target[1].textContent === 'Reset') {
+            searchBtn.textContent = 'Search';
+            resetSearch();
+        //    else this is a search so call search & set button to reset
+        } else {
+            searchBtn.textContent = 'Reset';
+            // I pass the event object as I need it in the next function
+            submitSearch(event);
+        }
+    });
 
-    searchDiv.appendChild(searchInput);
-    searchDiv.appendChild(searchBtn);
+    // append children to build the dom item
+    form.appendChild(searchInput);
+    form.appendChild(searchBtn);
+    searchDiv.appendChild(form);
 
+    // append the build to the dom
     pageHeader.appendChild(searchDiv);
 }
 // call itself to add search on page load
-createSearchInput();
+createSearch();
