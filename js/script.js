@@ -108,7 +108,9 @@ function createPaginationLinks() {
     mainStudentsList.parentNode.insertBefore(paginationWrapper, mainStudentsList.nextSibling);
 }
 // call itself to create pagination links on page load
-createPaginationLinks();
+if (allStudents.length > 10) {
+    createPaginationLinks();
+}
 
 // Add functionality to the pagination buttons so that they show and hide the correct items
 // Tip: If you created a function above to show/hide list items, it could be helpful here
