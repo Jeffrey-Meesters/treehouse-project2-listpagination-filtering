@@ -172,6 +172,7 @@ function searchStudent(searchValue) {
         noSearchResult.id = 'no-search-result';
         noSearchResult.textContent = 'No student found';
         mainStudentsList.appendChild(noSearchResult);
+        document.getElementById('search-btn').textContent = 'Search';
     }
 }
 
@@ -187,6 +188,7 @@ function submitSearch(e) {
         errorSpan.style.margin = '-20px -245px';
         errorSpan.textContent = 'You did not give a name';
         e.target.appendChild(errorSpan);
+        document.getElementById('search-btn').textContent = 'Search';
     } else {
         // hide pagination
         document.getElementsByClassName('pagination')[0].style.display = 'none';
@@ -235,6 +237,7 @@ function createSearch() {
     searchInput.placeholder = 'Search for students...';
 
     const searchBtn = document.createElement('button');
+    searchBtn.id = 'search-btn';
     searchBtn.type = 'submit';
     searchBtn.textContent = 'Search';
     // End create elements
@@ -248,6 +251,10 @@ function createSearch() {
         //    else this is a search so call search & set button to reset
         } else {
             searchBtn.textContent = 'Reset';
+            const isError = document.getElementById('search-error');
+            if (isError) {
+                isError.parentNode.removeChild(isError);
+            }
             // I pass the event object as I need it in the next function
             submitSearch(event);
         }
