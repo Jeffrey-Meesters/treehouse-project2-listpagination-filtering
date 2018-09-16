@@ -47,7 +47,7 @@ function hideStudentItems() {
         }
     }
 }
-// call itself to hide on page load
+// call itself to hide items on page load
 hideStudentItems();
 
 // Create and append the pagination links - Creating a function that can do this is a good approach
@@ -71,12 +71,13 @@ function createPaginationLinks() {
     // if the number of the page equals the number of the selected page set its class to active
     // append the build up anchor tag to the li and append the li to the ul
      for (let i = 0; i < numberOfPaginationItems; i += 1) {
-         let pageNumber = i + 1;
+        let pageNumber = i + 1;
         const paginationListItem = document.createElement('li');
-        const paginationLinkItem = document.createElement('a');
 
+        const paginationLinkItem = document.createElement('a');
         paginationLinkItem.setAttribute('href', '#');
         paginationLinkItem.textContent = pageNumber;
+
         if (pageNumber === selectedPaginationNumber) {
             paginationLinkItem.className = 'active';
         }
@@ -120,6 +121,30 @@ function changePage(e) {
     hideStudentItems();
 }
 
+// MAKE search functionality
+// I looked in the exceeds example and knew I have to build this:
+<!-- student search HTML to add dynamically -->
+// <div class="student-search">
+//     <input placeholder="Search for students...">
+//     <button>Search</button>
+// </div>
+<!-- end search -->
 
+function createSearchInput() {
+    const pageHeader = document.getElementsByClassName('page-header')[0];
+    const searchDiv = document.createElement('div');
+    searchDiv.className = 'student-search';
 
+    const searchInput = document.createElement('input');
+    searchInput.placeholder = 'Search for students...';
 
+    const searchBtn = document.createElement('button');
+    searchBtn.textContent = 'Search';
+
+    searchDiv.appendChild(searchInput);
+    searchDiv.appendChild(searchBtn);
+
+    pageHeader.appendChild(searchDiv);
+}
+// call itself to add search on page load
+createSearchInput();
