@@ -50,6 +50,18 @@ function hideStudentItems() {
 // call itself to hide items on page load
 hideStudentItems();
 
+// I remembered this function from the course
+// It is for creating elements
+function createElement(elementName, elementAttribute, value) {
+    const element = document.createElement(elementName);
+
+    if (elementAttribute && value ) {
+        element[elementAttribute] = value;
+    }
+
+    return element;
+}
+
 // Create and append the pagination links - Creating a function that can do this is a good approach
 function createPaginationLinks() {
     // get the number of students in the list
@@ -61,9 +73,9 @@ function createPaginationLinks() {
     const numberOfPaginationItems = Math.ceil(numberOfStudents/showStudentsPerPage);
 
     //I looked in the example html and knew I had to build the following structure
-    const paginationWrapper = document.createElement('div');
-    paginationWrapper.className = 'pagination';
-    const paginationList = document.createElement('ul');
+    const paginationWrapper = createElement('div', 'className', 'pagination');
+
+    const paginationList = createElement('ul');
     paginationList.addEventListener('click', changePage);
 
     // create list items with an anchor tag, with href attribute and an '#' as value
@@ -72,11 +84,10 @@ function createPaginationLinks() {
     // append the build up anchor tag to the li and append the li to the ul
      for (let i = 0; i < numberOfPaginationItems; i += 1) {
         let pageNumber = i + 1;
-        const paginationListItem = document.createElement('li');
+        const paginationListItem = createElement('li');
 
-        const paginationLinkItem = document.createElement('a');
+        const paginationLinkItem = createElement('a', 'textContent', pageNumber);
         paginationLinkItem.setAttribute('href', '#');
-        paginationLinkItem.textContent = pageNumber;
 
         if (pageNumber === selectedPaginationNumber) {
             paginationLinkItem.className = 'active';
@@ -139,7 +150,7 @@ function searchStudent(searchValue) {
                 let matchIndex = allStudentNameElements[i].textContent.match(searchValue).index;
                 // if index is 0 it is the first letter it matched with
                 if (matchIndex === 0) {
-                    // we found a match so we found the student > true
+                    // found a match so found the student > true
                     foundStudent = true;
                     // select the ancestor of this h3
                     const ancestor = allStudentNameElements[i].parentNode.parentNode;
@@ -152,7 +163,7 @@ function searchStudent(searchValue) {
                 }
             } else {
                 // if the searchvalues length is more than 1 it is a match on more letters
-                // we found a match so we found the student > true
+                // found a match so found the student > true
                 foundStudent = true;
                 // select the ancestor of this h3
                 const ancestor = allStudentNameElements[i].parentNode.parentNode;
@@ -168,9 +179,9 @@ function searchStudent(searchValue) {
 
     // if foundStudent is still false show that there is no student found
     if (!foundStudent) {
-        const noSearchResult = document.createElement('span');
+        const noSearchResult = createElement('span', 'textContent', 'No Student found');
         noSearchResult.id = 'no-search-result';
-        noSearchResult.textContent = 'No student found';
+
         mainStudentsList.appendChild(noSearchResult);
         document.getElementById('search-btn').textContent = 'Search';
     }
@@ -181,12 +192,12 @@ function submitSearch(e) {
     // I logged the event and saw that I can reach the input element with: e.target[0], as the input element is first in the target array
     const searchValue = e.target[0].value;
     if (searchValue === '' || !isNaN(searchValue)) {
-        const errorSpan = document.createElement('span');
+        const errorSpan = createElement('span', 'textContent', 'You did not give a name');
         errorSpan.id = 'search-error';
         errorSpan.style.color = '#f00';
         errorSpan.style.position = 'absolute';
         errorSpan.style.margin = '-20px -245px';
-        errorSpan.textContent = 'You did not give a name';
+
         e.target.appendChild(errorSpan);
         document.getElementById('search-btn').textContent = 'Search';
     } else {
@@ -227,19 +238,16 @@ function resetSearch() {
 function createSearch() {
     const pageHeader = document.getElementsByClassName('page-header')[0];
     // Start create elements
-    const searchDiv = document.createElement('div');
-    searchDiv.className = 'student-search';
+    const searchDiv = createElement('div', 'className', 'student-search');
 
-    const form = document.createElement('form');
-    form.id = 'search-from';
+    const form = createElement('form', 'id', 'search-form');
 
-    const searchInput = document.createElement('input');
-    searchInput.placeholder = 'Search for students...';
+    const searchInput = createElement('input', 'placeholder', 'Search for students...');
 
-    const searchBtn = document.createElement('button');
+    const searchBtn = createElement('button', 'textContent', 'Search');
     searchBtn.id = 'search-btn';
     searchBtn.type = 'submit';
-    searchBtn.textContent = 'Search';
+
     // End create elements
     // add eventlistener for form submit
     form.addEventListener('submit', (event) => {
