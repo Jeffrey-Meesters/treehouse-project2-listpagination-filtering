@@ -15,3 +15,9 @@
 * Click on show in finder (mac)
 * In finder double click on the file
 * Your browser should now pop up and you can use it!
+
+---
+
+## Graded: Exceeds Expectations:
+
+![Grade of project](https://res.cloudinary.com/debyt5msz/image/upload/v1537122262/Screen_Shot_2018-09-16_at_20.23.52_lfujc5.png)
