@@ -4,7 +4,7 @@ FSJS project 2 - List Filter and Pagination
 ******************************************/
 
 // Add variables that store DOM elements you will need to reference and/or manipulate
-// There is only one studentlist ul on the page so I emidiately select the first item in the htmlcollection
+// There is only one studentlist ul on the page so I immediately select the first item in the htmlcollection
 const mainStudentsList = document.getElementsByClassName('student-list')[0];
 // get all student items from the whole student list
 const allStudents = mainStudentsList.querySelectorAll('.student-item');
@@ -13,7 +13,6 @@ let selectedPaginationNumber = 1;
 // this is the number of items we want to show per page
 const showStudentsPerPage = 10;
 
-
 // Create a function to hide all of the items in the list except for the ten you want to show
 // Tip: Keep in mind that with a list of 54 students, the last page will only display four
 // In order to know the range of student items I need to show I created this function
@@ -21,10 +20,10 @@ const showStudentRange = () => {
     // the lowest index number needed is the selected page number minus 1
     // then multiplied by the amount of students per gage
     // e.g.: for page 1 this will be (1 -1) * 10 = 0, for page 2 (2 -1) * 10 = 10 etc.
-    const lowestRange = (selectedPaginationNumber - 1 ) * showStudentsPerPage;
+    let lowestRange = (selectedPaginationNumber - 1 ) * showStudentsPerPage;
     // the highest index number need is the selected page multiplied by the amount of students per page
     // e.g: for page 1: 1 * 10 = 10, page page 2: 2 * 10 = 10;
-    const highestRange = selectedPaginationNumber * showStudentsPerPage;
+    let highestRange = selectedPaginationNumber * showStudentsPerPage;
     // return these values as an object
     return {
         lowestRange,
@@ -40,16 +39,16 @@ function hideStudentItems() {
     for(let i = 0; i < allStudents.length; i += 1) {
         // if the range loop is between the range do nothing
         if (i >= range.lowestRange && i < range.highestRange) {
-        //    do nothing actually TODO: refactor into only IF statement
+            // I should show hidden students when a pagination link is clicked
+            allStudents[i].style.display = 'block';
         //    else hide the students not in this range
         } else {
             allStudents[i].style.display = 'none';
         }
     }
 }
+// call itself to hide on page load
 hideStudentItems();
-
-
 
 // Create and append the pagination links - Creating a function that can do this is a good approach
 function createPaginationLinks() {
@@ -65,6 +64,7 @@ function createPaginationLinks() {
     const paginationWrapper = document.createElement('div');
     paginationWrapper.className = 'pagination';
     const paginationList = document.createElement('ul');
+    paginationList.addEventListener('click', changePage);
 
     // create list items with an anchor tag, with href attribute and an '#' as value
     // set the textContent of the anchor tag with the number of the page
@@ -92,13 +92,33 @@ function createPaginationLinks() {
     // So I used this top answer: https://stackoverflow.com/questions/4793604/how-to-insert-an-element-after-another-element-in-javascript-without-using-a-lib
     mainStudentsList.parentNode.insertBefore(paginationWrapper, mainStudentsList.nextSibling);
 }
-
+// call itself to create pagination links on page load
 createPaginationLinks();
 
 // Add functionality to the pagination buttons so that they show and hide the correct items
 // Tip: If you created a function above to show/hide list items, it could be helpful here
+// because I need an click event listener I added a event in the createPaginationLinks function
+// this event triggers this function
+function changePage(e) {
+    // on click prevent default behaviour
+    e.preventDefault();
+    // store the pagination element (there is only 1 so I select it immediately)
+    const paginationElement = document.getElementsByClassName('pagination')[0];
+    // get all the anchor tags within the paginationElement
+    const anchorTagElements = paginationElement.getElementsByTagName('A');
 
+    // loop over all anchor tags to remove the classes
+    for(let i = 0; i < anchorTagElements.length; i += 1) {
+        anchorTagElements[i].className = '';
+    }
 
+    // set selectedPagination number to the textContent of the clicked paginationLink
+    selectedPaginationNumber = e.target.textContent;
+    // gif the clicked item a class of 'active'
+    e.target.className = 'active';
+    // call hideStudentItems to show the correct students
+    hideStudentItems();
+}
 
 
 
